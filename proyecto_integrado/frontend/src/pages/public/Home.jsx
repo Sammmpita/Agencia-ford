@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MapPin, Phone } from 'lucide-react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import VehiculoCard from '../../components/VehiculoCard'
@@ -86,21 +85,7 @@ const Home = () => {
     <div className="min-h-screen bg-white">
       <FloatingTestDrive />
 
-      {/* ── 1. TOPBAR ──────────────────────────────────────────────────────── */}
-      <div className="h-10 bg-[#003478]">
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-          <p className="text-xs text-blue-100 font-light tracking-wide flex items-center gap-1.5">
-            <MapPin size={13} className="opacity-70" />
-            Acapulco, Gro. — Av. Farallón No. 18 esq. Rancho Acapulco
-          </p>
-          <a href="tel:7441234567" className="font-mono text-xs text-blue-100 tracking-wide flex items-center gap-1.5 hover:text-white transition-colors">
-            <Phone size={12} className="opacity-70" />
-            744 123 4567
-          </a>
-        </div>
-      </div>
-
-      {/* ── 2. NAVBAR ──────────────────────────────────────────────────────── */}
+      {/* ── NAVBAR ──────────────────────────────────────────────────────── */}
       <Navbar />
 
       {/* ── 3. HERO ────────────────────────────────────────────────────────── */}

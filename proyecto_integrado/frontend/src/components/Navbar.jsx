@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Car, CalendarCheck, CreditCard, RotateCcw, MessageSquare, Wrench } from 'lucide-react'
+import { Car, CalendarCheck, CreditCard, RotateCcw, MessageSquare, Wrench, MapPin, Phone } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const FordLogo = () => (
@@ -33,7 +33,20 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-100">
+    <>
+      <div className="h-10 bg-[#003478]">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+          <p className="text-xs text-blue-100 font-light tracking-wide flex items-center gap-1.5">
+            <MapPin size={13} className="opacity-70" />
+            Acapulco, Gro. — Av. Farallón No. 18 esq. Rancho Acapulco
+          </p>
+          <a href="tel:7441234567" className="font-mono text-xs text-blue-100 tracking-wide flex items-center gap-1.5 hover:text-white transition-colors">
+            <Phone size={12} className="opacity-70" />
+            744 123 4567
+          </a>
+        </div>
+      </div>
+      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -226,6 +239,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </>
   )
 }
 
