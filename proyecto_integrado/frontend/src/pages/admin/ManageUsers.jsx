@@ -2,6 +2,7 @@
 import { useAuth } from '../../context/AuthContext'
 import StatusBadge from '../../components/admin/StatusBadge'
 import SlideOver from '../../components/admin/SlideOver'
+import PasswordInput from '../../components/PasswordInput'
 
 const FORM_INIT = {
   first_name: '',
@@ -292,15 +293,13 @@ export default function ManageUsers() {
 
           <div>
             <label className="text-xs uppercase tracking-widest text-gray-500 font-medium mb-1 block">Contraseña inicial</label>
-            <input
+            <PasswordInput
               name="password"
-              type="password"
               value={formEncargado.password}
               onChange={handleChangeEncargado}
               required
               placeholder="••••••••"
               autoComplete="new-password"
-              className="border-0 border-b border-gray-300 rounded-none px-0 py-3 focus:border-zinc-900 focus:ring-0 bg-transparent w-full text-gray-900 placeholder:text-gray-400 placeholder:font-light"
             />
           </div>
 
@@ -391,15 +390,13 @@ export default function ManageUsers() {
             <label className="text-xs uppercase tracking-widest text-gray-500 font-medium mb-1 block">
               Contraseña inicial
             </label>
-            <input
+            <PasswordInput
               name="password"
-              type="password"
               value={form.password}
               onChange={handleChange}
               required
               placeholder="••••••••"
               autoComplete="new-password"
-              className="border-0 border-b border-gray-300 rounded-none px-0 py-3 focus:border-zinc-900 focus:ring-0 bg-transparent w-full text-gray-900 placeholder:text-gray-400 placeholder:font-light"
             />
           </div>
 

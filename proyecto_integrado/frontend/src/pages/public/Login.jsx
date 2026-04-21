@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { useAuth } from '../../context/AuthContext'
+import PasswordInput from '../../components/PasswordInput'
 
 export default function Login() {
   const { login } = useAuth()
@@ -110,16 +111,14 @@ export default function Login() {
                   <label htmlFor="password" className="text-xs uppercase tracking-widest text-gray-500 font-medium mb-1">
                     Contraseña
                   </label>
-                  <input
+                  <PasswordInput
                     id="password"
-                    type="password"
                     name="password"
                     value={form.password}
                     onChange={handleChange}
                     placeholder="••••••••"
                     autoComplete="current-password"
                     required
-                    className="border-0 border-b border-gray-300 focus:border-zinc-900 focus:ring-0 focus:outline-none rounded-none bg-transparent px-0 py-3 w-full text-gray-900 placeholder:text-gray-400 placeholder:font-light transition-colors"
                   />
                 </div>
 

@@ -88,18 +88,7 @@ export default function AdminLayout({ children }) {
             ))}
           </div>
 
-          {/* Django Admin link */}
-          <a
-            href="/admin/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-3 text-sm font-medium tracking-wide text-gray-500 hover:text-amber-400 transition-all duration-200 mt-4 border-t border-zinc-800 pt-5"
-          >
-            Django Admin (Backend)
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" className="flex-shrink-0">
-              <path d="M4 1h7v7M11 1L4.5 7.5" />
-            </svg>
-          </a>
+
         </nav>
 
         {/* Sidebar Footer */}
