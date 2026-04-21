@@ -34,7 +34,7 @@ goto ENV_OK
 
 :CREAR_ENV
 echo [INFO] No se encontro el archivo .env. Generando uno para desarrollo...
-python -c "from django.core.management.utils import get_random_secret_key; k=get_random_secret_key(); content='SECRET_KEY='+k+'\nDEBUG=True\nALLOWED_HOSTS=127.0.0.1,localhost\nDB_ENGINE=django.db.backends.sqlite3\nDB_NAME=\nDB_USER=\nDB_PASSWORD=\nDB_HOST=\nDB_PORT=\nCORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173\n'; open('.env','w',encoding='utf-8').write(content); print('[OK] .env generado.')"
+python -c "from django.core.management.utils import get_random_secret_key; k=get_random_secret_key(); content='SECRET_KEY='+k+'\nDEBUG=True\nALLOWED_HOSTS=127.0.0.1,localhost\nCORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173\n'; open('.env','w',encoding='utf-8').write(content); print('[OK] .env generado.')"
 if errorlevel 1 goto ERR_ENV
 goto ENV_OK
 :ERR_ENV
