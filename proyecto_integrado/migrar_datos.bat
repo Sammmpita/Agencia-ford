@@ -28,6 +28,32 @@ exit /b 1
 cd /d "%BACKEND%"
 call "%VENV%"
 
+:: ── Verificar / crear .env ────────────────────────────────────────────────
+if not exist "%BACKEND%\.env" goto CREAR_ENV
+goto ENV_OK
+
+:CREAR_ENV
+echo [INFO] No se encontro el archivo .env. Generando uno para desarrollo...
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())" > "%TEMP%\sk_tmp.txt"
+set /p SK=<"%TEMP%\sk_tmp.txt"
+del "%TEMP%\sk_tmp.txt"
+(
+echo SECRET_KEY=%SK%
+echo DEBUG=True
+echo ALLOWED_HOSTS=127.0.0.1,localhost
+echo DB_ENGINE=django.db.backends.sqlite3
+echo DB_NAME=
+echo DB_USER=
+echo DB_PASSWORD=
+echo DB_HOST=
+echo DB_PORT=
+echo CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+) > "%BACKEND%\.env"
+echo [OK] .env creado con SECRET_KEY generada automaticamente.
+echo.
+
+:ENV_OK
+
 :: ── 1. Generar migraciones (makemigrations) ───────────────────────────────
 echo [1/4] Generando migraciones pendientes...
 python manage.py makemigrations
