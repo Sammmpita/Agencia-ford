@@ -2,10 +2,9 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 
 const AuthContext = createContext(null)
 
-const TOKEN_KEY = 'ford_access'
-const REFRESH_KEY = 'ford_refresh'
-
 export const AuthProvider = ({ children }) => {
+  // Access token solo en memoria (estado React), nunca en localStorage
+  const [accessToken, setAccessToken] = useState(null)
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -17,18 +16,24 @@ export const AuthProvider = ({ children }) => {
     return res.json()
   }, [])
 
-  // Restaurar sesión al montar
+  // Restaurar sesión al montar usando la cookie HttpOnly de refresh
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY)
-    if (!token) {
-      setLoading(false)
-      return
-    }
-    fetchMe(token)
-      .then(setUser)
+    fetch('/api/accounts/refresh/', {
+      method: 'POST',
+      credentials: 'include',   // envía la cookie ford_refresh
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Sin sesión activa')
+        return res.json()
+      })
+      .then(async ({ access }) => {
+        setAccessToken(access)
+        const me = await fetchMe(access)
+        setUser(me)
+      })
       .catch(() => {
-        localStorage.removeItem(TOKEN_KEY)
-        localStorage.removeItem(REFRESH_KEY)
+        setAccessToken(null)
+        setUser(null)
       })
       .finally(() => setLoading(false))
   }, [fetchMe])
@@ -37,15 +42,15 @@ export const AuthProvider = ({ children }) => {
     const res = await fetch('/api/accounts/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',   // para recibir la cookie ford_refresh
       body: JSON.stringify({ email, password }),
     })
     if (!res.ok) {
       const data = await res.json()
       throw new Error(data?.detail || 'Credenciales incorrectas.')
     }
-    const { access, refresh } = await res.json()
-    localStorage.setItem(TOKEN_KEY, access)
-    localStorage.setItem(REFRESH_KEY, refresh)
+    const { access } = await res.json()  // solo el access token viene en el body
+    setAccessToken(access)
     const me = await fetchMe(access)
     setUser(me)
     return me
@@ -59,7 +64,6 @@ export const AuthProvider = ({ children }) => {
     })
     if (!res.ok) {
       const data = await res.json()
-      // Devuelve el primer error encontrado para mostrarlo en el formulario
       const firstKey = Object.keys(data)[0]
       const msg = Array.isArray(data[firstKey]) ? data[firstKey][0] : data[firstKey]
       throw new Error(msg || 'Error al crear la cuenta.')
@@ -67,13 +71,16 @@ export const AuthProvider = ({ children }) => {
     await login(email, password)
   }
 
-  const logout = () => {
-    localStorage.removeItem(TOKEN_KEY)
-    localStorage.removeItem(REFRESH_KEY)
+  const logout = async () => {
+    await fetch('/api/accounts/logout/', {
+      method: 'POST',
+      credentials: 'include',   // para que el servidor borre la cookie
+    }).catch(() => {})
+    setAccessToken(null)
     setUser(null)
   }
 
-  const getToken = () => localStorage.getItem(TOKEN_KEY)
+  const getToken = () => accessToken
 
   return (
     <AuthContext.Provider value={{ user, loading, login, logout, register, getToken }}>
@@ -87,3 +94,4 @@ export const useAuth = () => {
   if (!ctx) throw new Error('useAuth debe usarse dentro de AuthProvider')
   return ctx
 }
+

@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StatusBadge from '../../components/admin/StatusBadge'
-
-const TOKEN_KEY = 'ford_access'
-
-const getHeaders = () => ({
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
-})
+import { useAuth } from '../../context/AuthContext'
 
 function formatFecha(isoString) {
   if (!isoString) return '—'
@@ -18,6 +12,12 @@ function formatFecha(isoString) {
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const { getToken } = useAuth()
+
+  const getHeaders = () => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${getToken()}`,
+  })
 
   const [kpis, setKpis] = useState([
     { label: 'Citas Pendientes',   value: '—' },

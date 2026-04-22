@@ -153,10 +153,6 @@ export default function ServicioAgendar() {
     if (getTipoDia(form.fecha) === 'domingo') { mostrarError('Los domingos no hay servicio disponible. Por favor elige otro día.'); return }
     if (!form.hora) { mostrarError('Selecciona un horario.'); return }
 
-    // Normalizar teléfono: tomar solo los últimos 10 dígitos (elimina +52 u otro prefijo)
-    const telRaw = (user.telefono || '').replace(/\D/g, '')
-    const tel10 = telRaw.slice(-10)
-
     setSubmitting(true)
     try {
       const res = await fetch('/api/servicio/citas/', {
@@ -166,8 +162,6 @@ export default function ServicioAgendar() {
           Authorization: `Bearer ${getToken()}`,
         },
         body: JSON.stringify({
-          cliente: `${user.first_name} ${user.last_name}`.trim() || user.email,
-          telefono: tel10,
           modelo_auto: form.modelo_auto.trim(),
           placas: form.placas.trim().toUpperCase(),
           servicio: form.servicio,
